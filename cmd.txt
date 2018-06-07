@@ -1,0 +1,1 @@
+.\windows-build-qt-static.ps1 -MingWDir "C:\Qt\Tools\mingw530_32" -QtStaticDir "C:\Qt\Static\src"

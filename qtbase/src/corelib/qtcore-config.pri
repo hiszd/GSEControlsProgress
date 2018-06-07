@@ -1,0 +1,9 @@
+QT.core.enabled_features = properties animation textcodec big_codecs codecs commandlineparser cxx11_future textdate datestring filesystemiterator filesystemwatcher gestures itemmodel proxymodel identityproxymodel library mimetype processenvironment process statemachine qeventtransition regularexpression settings sharedmemory sortfilterproxymodel std-atomic64 stringlistmodel systemsemaphore temporaryfile timezone topleveldomain translation xmlstream xmlstreamreader xmlstreamwriter
+QT.core.disabled_features = 
+QT.core.QT_CONFIG = properties animation textcodec big_codecs codecs textdate datestring doubleconversion filesystemiterator filesystemwatcher gestures itemmodel proxymodel identityproxymodel library mimetype process statemachine regularexpression settings sharedmemory sortfilterproxymodel stringlistmodel systemsemaphore temporaryfile translation xmlstream xmlstreamreader xmlstreamwriter
+QT.core.exports = 
+QT.core_private.enabled_features = datetimeparser doubleconversion sha3-fast
+QT.core_private.disabled_features = clock-gettime dlopen futimens futimes getauxval getentropy glib gnu-libiconv icu posix-libiconv iconv inotify journald linkat renameat2 slog2 statx syslog system-doubleconversion system-pcre2
+QT.core_private.libraries = libatomic
+QMAKE_LIBS_LIBATOMIC = 
+CONFIG += pcre2

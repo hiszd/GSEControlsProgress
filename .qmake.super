@@ -1,0 +1,2 @@
+QTREPOS += C:/Users/zion.koyl/Documents/GSEControlsProgress/qtbase
+QMAKEMODULES += C:/Users/zion.koyl/Documents/GSEControlsProgress/qtbase/mkspecs/modules

@@ -1,0 +1,26 @@
+CREATE ../../../lib/libqtpcre2d.a
+ADDMOD .obj/debug/pcre2_auto_possess.o
+ADDMOD .obj/debug/pcre2_chartables.o
+ADDMOD .obj/debug/pcre2_compile.o
+ADDMOD .obj/debug/pcre2_config.o
+ADDMOD .obj/debug/pcre2_context.o
+ADDMOD .obj/debug/pcre2_dfa_match.o
+ADDMOD .obj/debug/pcre2_error.o
+ADDMOD .obj/debug/pcre2_find_bracket.o
+ADDMOD .obj/debug/pcre2_jit_compile.o
+ADDMOD .obj/debug/pcre2_maketables.o
+ADDMOD .obj/debug/pcre2_match.o
+ADDMOD .obj/debug/pcre2_match_data.o
+ADDMOD .obj/debug/pcre2_newline.o
+ADDMOD .obj/debug/pcre2_ord2utf.o
+ADDMOD .obj/debug/pcre2_pattern_info.o
+ADDMOD .obj/debug/pcre2_serialize.o
+ADDMOD .obj/debug/pcre2_string_utils.o
+ADDMOD .obj/debug/pcre2_study.o
+ADDMOD .obj/debug/pcre2_substitute.o
+ADDMOD .obj/debug/pcre2_substring.o
+ADDMOD .obj/debug/pcre2_tables.o
+ADDMOD .obj/debug/pcre2_ucd.o
+ADDMOD .obj/debug/pcre2_valid_utf.o
+ADDMOD .obj/debug/pcre2_xclass.o
+SAVE
