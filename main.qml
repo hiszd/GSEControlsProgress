@@ -5,7 +5,7 @@ import FileIO 1.0
 ApplicationWindow {
     id: applicationWindow
     property string version
-    version: "Ver " + "0.1.1"
+    version: "Ver " + "0.1.0"
     visible: true
     width: 1050
     height: 780
