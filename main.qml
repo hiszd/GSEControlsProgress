@@ -53,6 +53,18 @@ ApplicationWindow {
             writebutton.checked = this.write
             console.log("Checked:"+writebutton.checked +" Pass: "+passEnter.passPass+" "+chng)
         }
+        property bool newFile
+        newFile: function() {
+            if(nfl) {
+                if(gr1.write) {
+                    jobfile.write("false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false")
+                    gr1.clearChecks()
+                } else {
+                    confirmcreate.open()
+                }
+            }
+            return nfl
+        }
         property int job
         Rectangle {
             id: hwdesc
@@ -1509,9 +1521,8 @@ ApplicationWindow {
         property bool choice
         onClosed: {
             if(this.choice) {
-                writebutton.checked = true
-                jobfile.write("false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false")
-                gr1.clearChecks()
+                passEnter.open()
+                gr1.newFile = true
             }
             if(!this.choice) {
                 jobup.open()
