@@ -5,7 +5,7 @@ import FileIO 1.0
 ApplicationWindow {
     id: applicationWindow
     property string version
-    version: "Ver " + "0.1.0"
+    version: "Ver " + "0.1.1"
     visible: true
     width: 1050
     height: 780
@@ -30,21 +30,28 @@ ApplicationWindow {
             ropchk1.clearChecks()
         }
         property bool write
-        write: {
-            if(writebutton.checked) {
+        function write1(chng) {
+            if(chng==="false") {
+                passTxt.text = ""
+            }
+            if(!passEnter.choice||!passEnter.passPass) {
                 hwpchk1.disableChecks()
                 sfpchk1.disableChecks()
                 sppchk1.disableChecks()
                 ropchk1.disableChecks()
+                this.write = false
             }
-            if(!writebutton.checked) {
+            if(passEnter.choice&&passEnter.passPass) {
                 hwpchk1.enableChecks()
                 sfpchk1.enableChecks()
                 sppchk1.enableChecks()
                 ropchk1.enableChecks()
+                this.write = true
+            } else {
+                this.write = false
             }
-            console.log(writebutton.checked)
-            return writebutton.checked
+            writebutton.checked = this.write
+            console.log("Checked:"+writebutton.checked +" Pass: "+passEnter.passPass+" "+chng)
         }
         property int job
         Rectangle {
@@ -471,7 +478,7 @@ ApplicationWindow {
                                 wrtfile+=(ropchk1.checked+",")
                                 wrtfile+=(ropchk2.checked+",")
                                 wrtfile+=(ropchk3.checked)
-                                if(!gr1.write) { jobfile.write(wrtfile) }
+                                if(gr1.write) { jobfile.write(wrtfile) }
                                 return (hwp1.total+sfp1.total+spp1.total+rop1.total)
                             }
                         }
@@ -500,15 +507,20 @@ ApplicationWindow {
                         Button {
                             id: writebutton
                             text: {
-                                if(!this.checked) {
+                                if(this.checked) {
                                     return qsTr("Disable Auto-Save")
                                 }
-                                if(this.checked) {
+                                if(!this.checked) {
                                     return qsTr(" Enable Auto-Save")
                                 }
                             }
+                            onClicked: {
+                                if(this.checked) {passEnter.open()}
+                                if(!this.checked) { gr1.write1("false");return}
+                                gr1.write1()
+                            }
                             checkable: true
-                            checked: true
+                            checked: false
                             height: 40
                             anchors.left: jobbutton.left
                             anchors.top: jobbutton.bottom
@@ -1497,7 +1509,7 @@ ApplicationWindow {
         property bool choice
         onClosed: {
             if(this.choice) {
-                writebutton.checked = false
+                writebutton.checked = true
                 jobfile.write("false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false")
                 gr1.clearChecks()
             }
@@ -1539,8 +1551,137 @@ ApplicationWindow {
             }
         }
     }
+    Popup {
+        id: passEnter
+        width: 300
+        height: 200
+        topMargin: (gr1.height/2) - (this.height/2)
+        bottomMargin: (gr1.height/2) - (this.height/2)
+        leftMargin: (gr1.width/2) - (this.width/2)
+        rightMargin: (gr1.width/2) - (this.width/2)
+        property string password
+        password: "XYZControls"
+        property bool passPass
+        passPass: {
+            if(passTxt.text == this.password) {return true}
+            else {return false}
+        }
+
+        property bool choice
+        focus: function(fcs) {
+            console.log(fcs)
+            return fcs
+        }
+
+        onOpened: {
+            passEnter.focus = false
+            passEnter.focus = true
+            passTxt.focus = true
+            passTxt.update()
+            passTxt.selectAll()
+            gr1.write1()
+        }
+        onClosed: {
+            passEnter.focus = false
+            passTxt.focus = false
+            passLabel.color = "white"
+            gr1.write1()
+        }
+        function hide() {
+            if(this.choice) {
+                if(this.passPass) {
+                    passEnter.close()
+                    this.focus = false
+                    passTxt.focus = false
+                    passLabel.color = "white"
+                } else {
+                    passLabel.color = "red"
+                }
+            } if(!this.choice) {
+                passEnter.close()
+                this.focus = false
+                passTxt.focus = false
+            }
+
+            this.focus = false
+            passTxt.focus = false
+        }
+
+        Column {
+            id: column3
+            width: passEnter.width
+            height: passLabel.height+job.height+btnRow.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            Text {
+                id: passLabel
+                height: 20
+                color: "white"
+                text: qsTr("Please enter password below.")
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Rectangle {
+                width: 120
+                height: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                TextInput {
+                    id: passTxt
+                    width: parent.width
+                    height: parent.height
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 18
+                    echoMode: TextInput.Password
+                    passwordMaskDelay: 500
+                    onFocusChanged: update()
+                    Keys.onEnterPressed: {
+                        passEnter.choice = true
+                        passEnter.hide()
+                    }
+
+                    validator: function() {
+                        if(!this.acceptableInput) {
+                            this.remove(this.text.length-1, this.text.length)
+                        }
+                    }
+                    function update() {
+                        this.cursorPosition = 0
+                        this.cursorVisible = 1
+                        this.focus = true
+                        passEnter.focus = true
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: parent.update()
+                    }
+                }
+            }
+            Row {
+                id: btnRow
+                anchors.horizontalCenter: parent.horizontalCenter
+                Button {
+                    text: qsTr("Submit")
+                    onClicked: {
+                        passEnter.choice = true
+                        passEnter.hide()
+                    }
+                }
+                Button {
+                    text: qsTr("Cancel")
+                    onClicked: {
+                        passEnter.choice = false
+                        passEnter.hide()
+                    }
+                }
+            }
+        }
+    }
 
     Component.onCompleted: {
         jobup.open()
+        gr1.write = false
+        gr1.write1()
+        passTxt.text = ""
     }
 }
